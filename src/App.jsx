@@ -7,7 +7,7 @@ function App() {
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState("");
-  const [copyBtn, setCopyBtn] = useState(<IoCopy />)
+  const [isCopied, setIsCopied] = useState(false)
 
   //ref hook
 
@@ -25,6 +25,7 @@ function App() {
       pass += str.charAt(char);
     }
 
+    setIsCopied(false)
     setPassword(pass);
   }, [length, numberAllowed, charAllowed, setPassword]);
 
@@ -34,7 +35,7 @@ function App() {
 
 
   const copyPasswordTOClipboard = useCallback(() => {
-    setCopyBtn(<IoMdDoneAll />)
+    setIsCopied(true)
     passwordRef.current?.select()
     window.navigator.clipboard.writeText(password)
   } , [password])
@@ -56,7 +57,7 @@ function App() {
             onClick={copyPasswordTOClipboard}
             className="Outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0"
           >
-            {copyBtn}
+            {isCopied ?  <IoMdDoneAll /> : <IoCopy /> }
           </button>
         </div>
         <div className="flex text-sm gap-x-2">
@@ -70,6 +71,7 @@ function App() {
               onChange={(e) => {
                 setLength(e.target.value);
               }}
+              
             />
             <label>Length: {length}</label>
           </div>
